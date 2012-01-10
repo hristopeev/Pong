@@ -11,7 +11,7 @@ var ball = {
 };
 
 var rect = {
-  x: 30,  
+  x: 10,  
   y: 10,  
   width: 10, 
   height: 100
@@ -54,9 +54,8 @@ function moveBall() {
   
     //collison detection
     if ((ball.x - ball.radius <= rect.x + rect.width) && 
-      (ball.y > rect.y && ball.y < rect.y + rect.height)) {
-        //console.log(ball);
-        //console.log(rect);
+        (ball.y + ball.radius > rect.y) && 
+        (ball.y + ball.radius < rect.y + rect.height)) {
         dx = -dx;
     }
 }
@@ -98,7 +97,7 @@ function startGame () {
 }
 
 socket.on ('Server ready', function () {
-    paper = new Raphael('container', "100%", "100%");
+    paper = new Raphael('container', playGround.width, playGround.height);
     initPlayer(); 
 });
 
@@ -114,6 +113,16 @@ socket.on ('Ball', function (s) {
     dy = -dy;
   
     startGame();
+});
+
+socket.on('Game Over', function () {
+    clearInterval(id);
+    alert('The oponent has left. Game Over!');
+    circle.remove()
+});
+
+socket.on('Game Full', function () {
+   alert('The game is full! Try again later.');
 });
 
 function adjustPlayGroundSize() {
