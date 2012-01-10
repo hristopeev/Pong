@@ -1,3 +1,5 @@
+Version 0.2
+
 1. npm install express socket.io
 2. node server.js
 3. localhost:3333
