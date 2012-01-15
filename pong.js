@@ -39,7 +39,11 @@ function moveBall() {
     if (ball.x + ball.radius >= playGround.width) {
         circle.remove();
         clearInterval(id);
-        socket.emit ('Transfer ball', ball);
+        
+        // get y position of the ball in percents from the playGround.height
+        ball.y = Math.floor ((ball.y / playGround.height) * 100);
+
+        socket.emit('Transfer ball', ball);
     }
   
 	if (ball.x - ball.radius < 0) {
@@ -106,8 +110,8 @@ socket.on('Start Game', function () {
 });
  
 socket.on ('Ball', function (s) {
-    ball.x = s.x;
-    ball.y = s.y;
+    ball.x = playGround.width - ball.radius; 
+    ball.y = Math.floor (playGround.height * (s.y / 100));
   
     dx = -dx; 
     dy = -dy;
